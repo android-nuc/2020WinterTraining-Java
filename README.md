@@ -658,6 +658,406 @@ Map : 元素是 key-value    key无顺序,不可重复   value 可重复
     Properties Hashtable的子类 key和value都是String  通常用于配置文件的处理
 ```
 
+
+
+-----
+
+## 7.线程
+
+首先定义一个术语：
+
+- 进程：一个进程包括由操作系统分配的内存空间，包含一个或多个线程。一个线程不能独立的存在，它必须是进程的一部分。一个进程一直运行，直到所有的非守护线程都结束运行后才能结束。
+- 一条线程指的是进程中一个单一顺序的控制流，一个进程中可以并发多个线程，每条线程并行执行不同的任务。
+
+Java进程中有一主线程负责main方法的执行，而在main方法的执行中创建的线程，就称为程序中的其他线程（相对主线程而言的）。
+
+- 线程的生命周期
+
+![](img/java-thread.jpg)
+
+- **新建**:当一个Thread类或其子类的对象被声明并创建时，新生的线程对象处于新建状态。此时它已经有了相应的内存空间和其它资源。
+- **就绪**:线程创建之后就具备了运行的条件，一旦调度机制把CPU时间片分配给线程，线程开始运行了（运行run()方法）。
+- **死亡**:run方法结束。 此时，调度机制将释放掉分配给线程的内存。 
+- **阻塞**:线程能够运行，但有某个条件阻止它的运行。此时，调度机制将忽略该线程，不会给线程分配CPU时间片。
+
+
+
+**一个线程进入阻塞状态，可能有如下原因：**
+
+- 调用sleep(int millisecondes)使线程进入休眠状态。
+
+- 线程要执行一段同步代码，由于无法获得相关的同步锁而陷入阻塞状态，只有等获得了同步锁，才能进入就绪状态。
+
+- 线程试图在某个对象上调用其同步控制方法，但是对象锁不可用。
+
+- 通过调用wait()使线程挂起。直到线程得到notify()或notifyAll()消息，线程才会进入就绪状态。 
+
+- 线程在等待某个输入/输出完成。
+
+### 7.1 创建线程
+
+三种方式介绍常用的两种
+
+```java
+public class MyThread extends Thread {
+    @Override
+    public void run() {
+        System.out.println("Thread 被执行");
+    }
+}
+
+public class MyRunnable implements Runnable {
+    @Override
+    public void run() {
+        System.out.println("runnable thread 被执行");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        MyThread myThread = new MyThread();
+        myThread.run();
+        Thread thread = new Thread(new MyRunnable());
+        thread.run();
+    }
+}
+```
+
+
+
+### 7.2线程同步
+
+**原因**：线程同步是为了保证在多个线程访问同一个对象的时候不会出现访问冲突的一种机制。
+
+**实现**：通过给对象（或类）加锁来完成线程的同步。synchronized关键字可以作为方法的修饰符，也可作为方法内的语句，也就是平时说的同步方法和同步语句块。
+
+- 同步方法
+
+```java
+public synchronized void save(){}
+```
+
+- 同步代码块
+
+``` java
+synchronized(object){}
+```
+
+
+
+### 7.3 线程通讯
+
+- wait()/notify机制
+
+生成者消费者问题：
+
+![1578697649484](C:\Users\Administrator\Desktop\JavaTrain\img\1578697649484.png)
+
+- 使用wait()方法使本线程等待，暂时让出CPU的使用权，并允许其它线程使用这个同步方法。
+- 其它线程如果在使用这个同步方法时如果不需要等待，那么它用完这个同步方法的同时，应当执行notifyAll()方法通知所有的由于使用wait()方法而处于等待的线程结束等待。
+
+```java
+public class Producer implements Runnable {
+    private int contents;
+    private boolean available = false;
+    private Thread producer;
+    private Thread consumer;
+
+    public synchronized int get() {
+        while (available == false) {
+            try {
+                wait(); //释放锁，等候producer放值
+            } catch (InterruptedException e) {
+            }
+        }
+        available = false;
+        System.out.println("Consumer gets:" + contents);
+        notifyAll();
+        return contents;
+    }
+
+    public synchronized void put(int value) {
+        while (available == true) {
+            try {
+                wait(); //释放锁，等候consumer取值
+            } catch (InterruptedException e) {
+            }
+        }
+        contents = value;
+        available = true;
+        System.out.println("Producer produces:" + contents);
+        notifyAll();
+    }
+
+    @Override
+    public void run() {
+        if (Thread.currentThread() == producer) {
+            for (int i = 0; i <= 9; i++) put(i);
+        } else {
+            for (int i = 0; i <= 9; i++) get();
+        }
+    }
+
+    Producer(){
+        producer = new Thread(this);
+        consumer = new Thread(this);
+        producer.start();
+        consumer.start();
+    }
+
+    public static void main(String[] args) {
+        new Producer();
+    }
+}
+```
+
+
+
+**Thread 方法**
+
+下表列出了Thread类的一些重要方法：
+
+| **序号** |                         **方法描述**                         |
+| :------- | :----------------------------------------------------------: |
+| 1        | **public void start()** 使该线程开始执行；**Java** 虚拟机调用该线程的 run 方法。 |
+| 2        | **public void run()** 如果该线程是使用独立的 Runnable 运行对象构造的，则调用该 Runnable 对象的 run 方法；否则，该方法不执行任何操作并返回。 |
+| 3        | **public final void setName(String name)** 改变线程名称，使之与参数 name 相同。 |
+| 4        | **public final void setPriority(int priority)**  更改线程的优先级。 |
+| 5        | **public final void setDaemon(boolean on)** 将该线程标记为守护线程或用户线程。 |
+| 6        | **public final void join(long millisec)** 等待该线程终止的时间最长为 millis 毫秒。 |
+| 7        |            **public void interrupt()** 中断线程。            |
+| 8        | **public final boolean isAlive()** 测试线程是否处于活动状态。 |
+
+测试线程是否处于活动状态。 上述方法是被Thread对象调用的。下面的方法是Thread类的静态方法。
+
+| **序号** |                         **方法描述**                         |
+| :------- | :----------------------------------------------------------: |
+| 1        | **public static void yield()** 暂停当前正在执行的线程对象，并执行其他线程。 |
+| 2        | **public static void sleep(long millisec)** 在指定的毫秒数内让当前正在执行的线程休眠（暂停执行），此操作受到系统计时器和调度程序精度和准确性的影响。 |
+| 3        | **public static boolean holdsLock(Object x)** 当且仅当当前线程在指定的对象上保持监视器锁时，才返回 true。 |
+| 4        | **public static Thread currentThread()** 返回对当前正在执行的线程对象的引用。 |
+| 5        | **public static void dumpStack()** 将当前线程的堆栈跟踪打印至标准错误流。 |
+
+
+
+## 8.文件IO
+
+Java.io 包几乎包含了所有操作输入、输出需要的类。所有这些流类代表了输入源和输出目标。一个流可以理解为一个数据的序列。输入流表示从一个源读取数据，输出流表示向一个目标写数据。
+
+![img](https://www.runoob.com/wp-content/uploads/2013/12/iostream2xx.png)
+
+- 流：个流可以理解为一个数据的序列。
+- 缓存流：从磁盘读入到内存并将数据序列分块返回。
+
+### 8.1 File类
+
+Java文件类以抽象的方式代表文件名和目录路径名。该类主要用于文件和目录的创建、文件的查找和文件的删除等。File对象代表磁盘中实际存在的文件和目录。
+
+- **mkdir( )**方法创建一个文件夹，成功则返回true，失败则返回false。失败表明File对象指定的路径已经存在，或者由于整个路径还不存在，该文件夹不能被创建。
+- **mkdirs()**方法创建一个文件夹和它的所有父文件夹。
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        File file = new File("C:\\Users\\Administrator\\Desktop\\JavaTrain\\mangzhong.mp3");
+        if(!file.isDirectory())
+            file = new File(file.getParent());
+        File[] listFiles = file.listFiles();
+        System.out.println(listFiles.length);
+        for (File f:listFiles) {
+            System.out.println(f.getName());
+        }
+    }
+}
+```
+
+[参考](<https://www.runoob.com/java/java-file.html>)
+
+### 8.2 FileInputStream FileOutputStream
+
+- 该流用于从文件读取数据
+
+``` java
+public class Main {
+    public static void main(String[] args) throws IOException {
+        File file = new File("C:\\Users\\Administrator\\Desktop\\JavaTrain\\cont.txt");
+        File out = new File("C:\\Users\\Administrator\\Desktop\\JavaTrain\\img\\cont.txt");
+        FileInputStream inputStream = new FileInputStream(file);
+        FileOutputStream outputStream = new FileOutputStream(out);
+
+        int size = inputStream.available();
+        for (int i = 0; i < size; i++) {
+            byte temp = (byte) inputStream.read();
+            outputStream.write(temp);
+            System.out.println((char) temp);
+        }
+        inputStream.close();
+        outputStream.close();
+    }
+}
+```
+
+
+
+### 8.3 InputStreamReader OutputStreamWriter
+
+``` java
+public class Main {
+    public static void main(String[] args) throws IOException {
+        File file = new File("C:\\Users\\Administrator\\Desktop\\JavaTrain\\cont.txt");
+        File out = new File("C:\\Users\\Administrator\\Desktop\\JavaTrain\\img\\cont.txt");
+        FileInputStream inputStream = new FileInputStream(file);
+        FileOutputStream outputStream = new FileOutputStream(out);
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+        OutputStreamWriter outputStreamWriter =  new OutputStreamWriter(outputStream, "UTF-8");
+        while (inputStreamReader.ready()){
+            char temp = (char)inputStreamReader.read();
+            outputStreamWriter.write(temp);
+            System.out.println(temp);
+        }
+        outputStreamWriter.append("123456");
+        inputStreamReader.close();  // 注意顺序
+
+        inputStream.close();
+        outputStreamWriter.close();
+        outputStream.close();
+    }
+}
+```
+
+
+
+
+
+## 9.网络编程
+
+**报文格式**
+
+![](img/post.jpg)
+
+![](img/return.jpg)
+
+- GET请求
+
+User-Agent：产生请求的浏览器类型。`Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)`
+Accept：客户端可识别的内容类型列表。`*/*`
+Host：请求的主机名，允许多个域名同处一个IP地址，即虚拟主机。
+connection:Keep-Alive
+
+```
+GET /sn/index.php?sn=123&n=asa HTTP/1.1
+Accept: */*
+Accept-Language: zh-cn
+host: localhost
+
+
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 12
+Connection:close
+```
+
+
+
+``` java
+public class GET {
+    public String send(String url, String param) throws FileNotFoundException {
+        String result = "";
+        BufferedReader in = null;
+        File out = new File("C:\\Users\\Administrator\\Desktop\\JavaTrain\\img\\cont.mp3");
+        FileOutputStream outputStream = new FileOutputStream(out);
+
+        try {
+            String urlNameString = url + "?" + param;
+            URL realUrl = new URL(urlNameString);
+            // 打开和URL之间的连接
+            URLConnection connection = realUrl.openConnection();
+            // 设置通用的请求属性
+            connection.setRequestProperty("accept", "*/*");
+            connection.setRequestProperty("connection", "Keep-Alive");
+            connection.setRequestProperty("user-agent",
+                    "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
+            // 建立实际的连接
+            connection.connect();
+            // 获取所有响应头字段
+            Map<String, List<String>> map = connection.getHeaderFields();
+            // 遍历所有的响应头字段
+            for (String key : map.keySet()) {
+                System.out.println(key + "--->" + map.get(key));
+            }
+            // 定义 BufferedReader输入流来读取URL的响应
+            InputStream inputStream = connection.getInputStream();
+            int size = inputStream.available();
+            for (int i = 0; i < size; i++) {
+                outputStream.write(inputStream.read());
+            }
+            outputStream.close();
+            inputStream.close();
+            
+//            in = new BufferedReader(new InputStreamReader(
+//                    connection.getInputStream()));
+//            String line;
+//            while ((line = in.readLine()) != null) {
+//                result += line;
+//            }
+        } catch (Exception e) {
+            System.out.println("发送GET请求出现异常！" + e);
+            e.printStackTrace();
+        }
+        // 使用finally块来关闭输入流
+        finally {
+            try {
+                if (in != null) {
+                    in.close();
+                }
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+        }
+        return result;
+    }
+}
+
+```
+
+- POST请求
+
+```
+POST /sn/index.php HTTP/1.1
+Accept: */*
+Accept-Language: zh-cn
+host: localhost
+
+
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 12
+Connection:close
+sn=123&n=asa
+```
+
+
+
+
+
+# 网络MP3播放器Demo
+
+### 1.使用第三方解决方案 ([jl1.0.jar](<http://www.java2s.com/Code/Jar/j/Downloadjl10jar.htm>))播放MP3音乐
+
+```java
+public class PlayLocalMP3 {
+    public static void main(String[] args) throws FileNotFoundException, JavaLayerException {
+        File file = new File("C:\\Users\\Administrator\\Desktop\\JavaTrain\\mangzhong.mp3");
+        FileInputStream fileInputStream= new FileInputStream(file);
+        Player player = new Player(fileInputStream);
+        player.play();
+    }
+}
+```
+
+
+
+
+
+
 # 参考
 
 - [菜鸟教程](<https://www.runoob.com/java/java-tutorial.html>)

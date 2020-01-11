@@ -2,9 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d1ad1ac3-9a2e-4fde-a331-dba47bf9ea58" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LabTrainProject/src/Music/MusicPlayer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LabTrainProject/LabTrainProject.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../LabTrainProject/LabTrainProject.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LabTrainProject/out/production/LabTrainProject/code3_4/Main$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/../LabTrainProject/out/production/LabTrainProject/code3_4/Main$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LabJavaTrain/code3_5/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/LabJavaTrain/code3_5/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LabJavaTrain.iml" beforeDir="false" afterPath="$PROJECT_DIR$/LabJavaTrain.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../上.md" beforeDir="false" afterPath="$PROJECT_DIR$/../上.md" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -35,7 +37,15 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../LabTrainProject" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/jl1.0.jar!/" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.2" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveInnerDialog.RECENTS_KEY">
+      <recent name="code7_2" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -49,13 +59,13 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Main">
-    <configuration name="Main (2)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="code3_5.Main" />
+  <component name="RunManager" selected="Application.PlayLocalMP3">
+    <configuration name="Main (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="code8_3.Main" />
       <module name="LabJavaTrain" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="code3_5.*" />
+          <option name="PATTERN" value="code8_3.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -64,11 +74,11 @@
       </method>
     </configuration>
     <configuration name="Main (3)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="code4_1.Main" />
+      <option name="MAIN_CLASS_NAME" value="code8_1.Main" />
       <module name="LabJavaTrain" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="code4_1.*" />
+          <option name="PATTERN" value="code8_1.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -77,11 +87,11 @@
       </method>
     </configuration>
     <configuration name="Main (4)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="code5_1.Main" />
+      <option name="MAIN_CLASS_NAME" value="code9_1.Main" />
       <module name="LabJavaTrain" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="code5_1.*" />
+          <option name="PATTERN" value="code9_1.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -90,11 +100,11 @@
       </method>
     </configuration>
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="code5_2.Main" />
+      <option name="MAIN_CLASS_NAME" value="code8_2.Main" />
       <module name="LabJavaTrain" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="code5_2.*" />
+          <option name="PATTERN" value="code8_2.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -102,12 +112,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="StaticDemo" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="code3_6.StaticDemo" />
+    <configuration name="PlayLocalMP3" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="OnlineMusicPlayer.PlayLocalMP3" />
       <module name="LabJavaTrain" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="code3_6.*" />
+          <option name="PATTERN" value="OnlineMusicPlayer.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -117,11 +127,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Main" />
+        <item itemvalue="Application.PlayLocalMP3" />
         <item itemvalue="Application.Main (4)" />
+        <item itemvalue="Application.Main (1)" />
+        <item itemvalue="Application.Main" />
         <item itemvalue="Application.Main (3)" />
-        <item itemvalue="Application.Main (2)" />
-        <item itemvalue="Application.StaticDemo" />
       </list>
     </recent_temporary>
   </component>
@@ -140,6 +150,8 @@
       <updated>1578618277990</updated>
       <workItem from="1578618284920" duration="12551000" />
       <workItem from="1578641296518" duration="9927000" />
+      <workItem from="1578669294618" duration="5270000" />
+      <workItem from="1578696199707" duration="9234000" />
     </task>
     <servers />
   </component>
