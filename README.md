@@ -840,7 +840,15 @@ public class Producer implements Runnable {
 
 
 
+
+
+
+
 ----
+
+
+
+
 
 
 
@@ -1065,7 +1073,7 @@ public class PlayLocalMP3 {
 # 参考
 
 - [菜鸟教程](<https://www.runoob.com/java/java-tutorial.html>)
-- [卢瑞峰Java第一次培训]([https://lab.kenvix.com/topic/46/2019-java-%E5%9F%B9%E8%AE%AD%E8%B5%84%E6%96%99/3](https://lab.kenvix.com/topic/46/2019-java-培训资料/3))
+- [卢瑞峰Java第一次培训](https://lab.kenvix.com/topic/46)
 
 
 
